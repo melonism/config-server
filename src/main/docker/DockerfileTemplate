@@ -1,0 +1,14 @@
+FROM openjdk
+
+VOLUME /tmp
+ADD maven/${fileName}.jar ${fileName}.jar
+
+RUN mkdir /nativeConfig
+COPY nativeConfig/application.properties /nativeConfig
+COPY nativeConfig/photoAppLogstash.conf /nativeConfig
+COPY nativeConfig/users-ws.properties /nativeConfig
+
+RUN sh -c 'touch /${fileName}.jar'
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/${fileName}.jar"]
+
+EXPOSE 8012
